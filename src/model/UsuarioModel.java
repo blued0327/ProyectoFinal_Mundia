@@ -1,10 +1,9 @@
-
-
-
 package model;
+
 import java.time.LocalDateTime;
 
 public class UsuarioModel {
+
     private int id;
     private String username;
     private String password;
@@ -12,6 +11,12 @@ public class UsuarioModel {
     private boolean estado;
     private LocalDateTime creadoCuando;
 
+    //vacio
+    public UsuarioModel() {
+
+    }
+
+    //todos
     public UsuarioModel(int id, String username, String password, String rol, boolean estado, LocalDateTime creadoCuando) {
         this.id = id;
         this.username = username;
@@ -68,8 +73,5 @@ public class UsuarioModel {
     public void setCreadoCuando(LocalDateTime creadoCuando) {
         this.creadoCuando = creadoCuando;
     }
-    
-    
-    
-    
+
 }
