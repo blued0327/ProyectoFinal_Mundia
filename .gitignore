@@ -1,12 +1,5 @@
+# Credenciales — esto SÍ importa ocultar
+#db.properties
 
-# NetBeans
+# Carpeta privada de NetBeans (configuración personal, no del proyecto)
 nbproject/private/
-build/
-dist/
-
-# Compilados
-*.class
-*.jar
-
-# Credenciales
-db.properties
