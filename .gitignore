@@ -1,0 +1,12 @@
+
+# NetBeans
+nbproject/private/
+build/
+dist/
+
+# Compilados
+*.class
+*.jar
+
+# Credenciales
+db.properties
