@@ -26,7 +26,8 @@ public class CreateConnection {
     // SINGLETON - parte 2: constructor private, nadie fuera puede hacer new CreateConnection()
 
     private CreateConnection() {
-        try (InputStream in = CreateConnection.class.getResourceAsStream("/db.properties")) {
+        try (InputStream in = CreateConnection.class.getResourceAsStream("/connection/db_config.properties")) {
+           
             config.load(in);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());

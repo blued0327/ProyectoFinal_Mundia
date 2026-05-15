@@ -2,4 +2,4 @@
 #db.properties
 
 # Carpeta privada de NetBeans (configuración personal, no del proyecto)
-nbproject/private/
+#nbproject/private/
