@@ -16,7 +16,6 @@ import modelCliente.ClienteModel;
  */
 public class ClienteDao {
     
-    private final Connection conn = CreateConnection.getInstancia().getConnection();
     
     public boolean RegistrarCLiente(ClienteModel cm){
         
@@ -40,7 +39,7 @@ public class ClienteDao {
     }
     }
         
-     public boolean modificarCliente(ClienteModel cm) {
+     public boolean ModificarCliente(ClienteModel cm) {
         String sql = "UPDATE cliente SET nombre = ?, apellido = ?, telefono = ?, email = ?, direccion = ? WHERE id = ?";
  
         try (Connection conn = CreateConnection.getInstancia().getConnection();
@@ -61,7 +60,7 @@ public class ClienteDao {
         }
     }
      
-     public boolean eliminarCliente(int id) {
+     public boolean EliminarCliente(int id) {
         String sql = "DELETE FROM cliente WHERE id = ?";
  
         try (Connection conn = CreateConnection.getInstancia().getConnection();
@@ -76,6 +75,30 @@ public class ClienteDao {
             return false;
         }
     }
+     
+     public ClienteModel BuscarConID(int id){
+       String sql = "SELECT * FROM cliente WHERE id=?";
+       
+       try(Connection conn = CreateConnection.getInstancia().getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)){
+           ps.setInt(1, id);
+           try(ResultSet rs = ps.executeQuery()){
+               while(rs.next()){
+                   return new ClienteModel(
+                   rs.getInt("id"),
+                   rs.getString("nombre"),
+                   rs.getString("apellido"),
+                   rs.getString("telefono"),
+                   rs.getString("email"),
+                   rs.getString("direccion"));
+               }
+           }
+       }catch (SQLException e) {
+            e.printStackTrace();
+        }
+         
+         return null;
+     }
     
     
 

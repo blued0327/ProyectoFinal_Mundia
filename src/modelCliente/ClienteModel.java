@@ -18,10 +18,9 @@ public class ClienteModel {
     private String email;
     private String direccion;
 
-    // Constructor vacío
-    public ClienteModel() {}
+    
+    public ClienteModel(){}
 
-    // Constructor completo (con id — para listar, modificar, eliminar)
     public ClienteModel(int id, String nombre, String apellido, String telefono, String email, String direccion) {
         this.id = id;
         this.nombre = nombre;
