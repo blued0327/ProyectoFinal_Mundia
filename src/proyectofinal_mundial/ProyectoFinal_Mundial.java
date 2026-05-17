@@ -17,8 +17,8 @@ public class ProyectoFinal_Mundial {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Connection conn = CreateConnection.getInstancia().getConnection();
-        
+        Connection conn = CreateConnection.getInstancia().getConnection();    
+    }
     }
     
-}
+
