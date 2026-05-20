@@ -8,8 +8,8 @@ package controllerClientes;
  *
  * @author rchar
  */
-import modelCliente.ClienteModel;
-import daoCliente.ClienteDao;
+import model.ClienteModel;
+import dao.ClienteDao;
 import java.util.List;
 
 public class ClientesController {
