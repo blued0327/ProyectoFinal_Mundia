@@ -29,7 +29,8 @@ public class UsuarioController {
     //actualizar
     public boolean actualizarUsuario(int id, String username, String password, String rol, boolean estado) {
         String hash = PasswordUtil.hashear(password);
-        UsuarioModel user = new UsuarioModel(username, password, rol, estado);
+        UsuarioModel user = new UsuarioModel(username, hash, rol, estado);
+        user.setId(id);
         return dao.actualizar(user);
     }
 

@@ -13,12 +13,9 @@ import dao.ClienteDao;
 import java.util.List;
 
 public class ClientesController {
-    
-    
-     private final ClienteDao dao = new ClienteDao();
 
-    
- 
+    private final ClienteDao dao = new ClienteDao();
+
     // Registrar cliente nuevo
     public void registrarCliente(String nombre, String apellido, String telefono, String email, String direccion) {
         ClienteModel cm = new ClienteModel();
@@ -29,7 +26,7 @@ public class ClientesController {
         cm.setDireccion(direccion);
         dao.RegistrarCLiente(cm);
     }
- 
+
     // Modificar cliente existente
     public void modificarCliente(int id, String nombre, String apellido, String telefono, String email, String direccion) {
         ClienteModel cm = new ClienteModel();
@@ -41,14 +38,15 @@ public class ClientesController {
         cm.setDireccion(direccion);
         dao.ModificarCliente(cm);
     }
- 
+
     // Eliminar cliente con id
     public void eliminarCliente(int id) {
         dao.EliminarCliente(id);
     }
+
     //Buscar cliente con id
     public ClienteModel buscarClientePorId(int id) {
         return dao.BuscarConID(id);
-}
-    
+    }
+
 }

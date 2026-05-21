@@ -105,17 +105,21 @@ public class LoginView extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    
+          
     private void configurarVentana() {
         setTitle("Login - Sistema Mundial 2026");
         setLocationRelativeTo(null);              // centrar pantalla
-        setMinimumSize(new Dimension(400, 300));  // tamano minimo al redimensionar
+        setMinimumSize(new Dimension(400, 300));  // tamano minimo 
         lbl_error.setText(" ");
         lbl_error.setForeground(Color.RED);
     }
 
+    
+        
     private void configurarEventos() {
-        // permitir login con Enter en el campo de password
+        // permitir el login con Enter en el campo de password
         txt_password.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -138,33 +142,40 @@ public class LoginView extends javax.swing.JFrame {
         // username vacio
         if (username.isEmpty()) {
             mostrarError("Ingrese el usuario");
-            txt_usuario.requestFocus();
+                txt_usuario.requestFocus();
             return false;
         }
 
         // password vacio
         if (password.isEmpty()) {
             mostrarError("Ingrese la contraseña");
-            txt_password.requestFocus();
+                txt_password.requestFocus();
             return false;
         }
+        
+        
 
         // username muy corto
         if (username.length() < 3) {
             mostrarError("El usuario debe tener al menos 3 caracteres");
-            txt_usuario.requestFocus();
+                    txt_usuario.requestFocus();
             return false;
         }
+        
+        
 
         // username con caracteres invalidos
         if (!username.matches("[a-zA-Z0-9_]+")) {
-            mostrarError("El usuario solo puede tener letras, números y guion bajo");
-            txt_usuario.requestFocus();
+             mostrarError("El usuario solo puede tener letras, números y guion bajo");
+                 txt_usuario.requestFocus();
             return false;
         }
 
         return true;
     }
+    
+    
+    
 
     private void mostrarError(String mensaje) {
         lbl_error.setText(mensaje);
@@ -200,8 +211,8 @@ public class LoginView extends javax.swing.JFrame {
                     JOptionPane.INFORMATION_MESSAGE);
 
             // abrir menu principal y cerrar login
-            // MenuPrincipalView menu = new MenuPrincipalView();
-            // menu.setVisible(true);
+            MenuPrincipalView menu = new MenuPrincipalView();
+            menu.setVisible(true);
             this.dispose();
         } else {
             mostrarError("Usuario o contraseña incorrectos");
