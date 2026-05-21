@@ -14,7 +14,7 @@ public class UsuarioDao {
     public int insertar(UsuarioModel user) {
 
         //query -- se cambia por los procedures sp--tengan cuidado con esto!!!!!
-        String query = "select sp_usuario_insertar(?,?,?,?)";
+        String query = "select sp_cliente_insertar(?,?,?,?)";
         //try
         try (Connection conn = CreateConnection.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, user.getUsername());
@@ -40,7 +40,7 @@ public class UsuarioDao {
     public boolean actualizar(UsuarioModel user) {
 
         //query
-        String query = "SELECT sp_usuario_actualizar(?, ?, ?, ?, ?)";
+        String query = "SELECT sp_actualizar_cliente (?, ?, ?, ?, ?)";
 
         //try
         try (Connection conn = CreateConnection.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {

@@ -3,20 +3,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controller;
-
-/**
- *
- * @author rchar
- */
-import model.ClienteModel;
+ 
 import dao.ClienteDao;
+import model.ClienteModel;
 import java.util.List;
-
+ 
 public class ClientesController {
-
+ 
     private final ClienteDao dao = new ClienteDao();
-
-    // Registrar cliente nuevo
+ 
+    // Listar todos
+    public List<ClienteModel> obtenerClientes() {
+        return dao.listarClientes();
+    }
+ 
+    // Registrar
     public void registrarCliente(String nombre, String apellido, String telefono, String email, String direccion) {
         ClienteModel cm = new ClienteModel();
         cm.setNombre(nombre);
@@ -24,11 +25,11 @@ public class ClientesController {
         cm.setTelefono(telefono);
         cm.setEmail(email);
         cm.setDireccion(direccion);
-        dao.RegistrarCLiente(cm);
+        dao.registrarCliente(cm);
     }
-
-    // Modificar cliente existente
-    public void modificarCliente(int id, String nombre, String apellido, String telefono, String email, String direccion) {
+ 
+    // Actualizar
+    public void actualizarCliente(int id, String nombre, String apellido, String telefono, String email, String direccion) {
         ClienteModel cm = new ClienteModel();
         cm.setId(id);
         cm.setNombre(nombre);
@@ -36,17 +37,21 @@ public class ClientesController {
         cm.setTelefono(telefono);
         cm.setEmail(email);
         cm.setDireccion(direccion);
-        dao.ModificarCliente(cm);
+        dao.actualizarCliente(cm);
     }
-
-    // Eliminar cliente con id
-    public void eliminarCliente(int id) {
-        dao.EliminarCliente(id);
+ 
+    // Cambiar estado (activo/inactivo)
+    public void cambiarEstado(int id) {
+        dao.cambiarEstado(id);
     }
-
-    //Buscar cliente con id
-    public ClienteModel buscarClientePorId(int id) {
-        return dao.BuscarConID(id);
+ 
+    // Buscar por ID
+    public ClienteModel buscarPorId(int id) {
+        return dao.buscarPorId(id);
     }
-
+ 
+    // Buscar por nombre
+    public List<ClienteModel> buscarPorNombre(String texto) {
+        return dao.buscarPorNombre(texto);
+    }
 }
