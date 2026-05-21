@@ -9,6 +9,8 @@ public class ProyectoFinal_Mundial {
             // new view.LoginView().setVisible(true);
             System.out.println("Sistema Mundial 2026 - iniciar LoginView aquí");
         });
+        
+        
     }
 }
 
