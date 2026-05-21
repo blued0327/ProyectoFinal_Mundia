@@ -1,14 +1,11 @@
 package proyectofinal_mundial;
 
+import view.LoginView;
+
 public class ProyectoFinal_Mundial {
 
     public static void main(String[] args) {
-        // Punto de entrada del programa
-        // TODO: abrir LoginView cuando esté listo
-        java.awt.EventQueue.invokeLater(() -> new view.LoginView().setVisible(true));
+        LoginView login = new LoginView();
+        login.setVisible(true);
     }
 }
-
-    
-    
-
