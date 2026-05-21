@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import util.IconUtil;
 
 /**
  *
@@ -64,31 +65,37 @@ public class PartidosView extends javax.swing.JFrame {
 
     // ── Valida que los campos obligatorios estén llenos ────────────────────────
     private boolean validarCampos() {
-        if (txtEquipoLocal.getText().trim().isEmpty()
-                || txtEquipovisitante.getText().trim().isEmpty()
-                || txtFecha.getText().trim().isEmpty()
-                || txtEstadio.getText().trim().isEmpty()
+        if (txtEquipoLocal.getText().trim().isEmpty() || txtEquipovisitante.getText().trim().isEmpty() || txtFecha.getText().trim().isEmpty() || txtEstadio.getText().trim().isEmpty()
                 || txtCapacidad.getText().trim().isEmpty()) {
+            
+            
             JOptionPane.showMessageDialog(this,
-                    "Los campos Equipo Local, Visitante, Fecha, Estadio y Capacidad son obligatorios.",
-                    "Campos incompletos", JOptionPane.WARNING_MESSAGE);
+                        "Los campos Equipo Local, Visitante, Fecha, Estadio y Capacidad son obligatorios.",
+                            "Campos incompletos", JOptionPane.WARNING_MESSAGE);
+            
+            
             return false;
         }
+        
+        
         if (parseFecha() == null) {
             JOptionPane.showMessageDialog(this,
-                    "Formato de fecha incorrecto.\nEjemplo correcto: 2026-06-11 19:00",
-                    "Fecha inválida", JOptionPane.WARNING_MESSAGE);
+                    "Formato de fecha incorrecto.",
+                            "Fecha invalida", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         try {
             int cap = Integer.parseInt(txtCapacidad.getText().trim());
-            if (cap <= 0) {
-                throw new NumberFormatException();
+                     if (cap <= 0) {
+                            throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this,
-                    "La capacidad debe ser un número entero mayor a 0.",
-                    "Capacidad inválida", JOptionPane.WARNING_MESSAGE);
+                    "La capacidad debe ser un numero entero mayor a 0.",
+                                "Capacidad invalida", JOptionPane.WARNING_MESSAGE);
+            
+            
+            
             return false;
         }
         return true;
@@ -109,6 +116,7 @@ public class PartidosView extends javax.swing.JFrame {
     public PartidosView() {
         initComponents();
         cargarTabla(controller.listarPartidos());   // carga la tabla al abrir
+        IconUtil.setIcono(this);
     }
 
     /**
@@ -368,7 +376,8 @@ public class PartidosView extends javax.swing.JFrame {
             cargarTabla(controller.listarPartidos());
         } else {
             JOptionPane.showMessageDialog(this,
-                    "No se pudo registrar el partido.\nVerifica que los equipos no sean iguales.",
+                    "No se pudo registrar el partido."
+                            + "Verifica que los equipos no sean iguales.",
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
 
@@ -422,7 +431,8 @@ public class PartidosView extends javax.swing.JFrame {
 
         int id = (int) jTable1.getValueAt(fila, 0);
         int confirm = JOptionPane.showConfirmDialog(this,
-                "¿Deseas cancelar este partido?\nSe cambiará su estado a CANCELADO.",
+                "¿Deseas cancelar este partido?"
+                        + "Se cambiara su estado a cancelado.",
                 "Confirmar cancelación", JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
@@ -433,7 +443,8 @@ public class PartidosView extends javax.swing.JFrame {
                 cargarTabla(controller.listarPartidos());
             } else {
                 JOptionPane.showMessageDialog(this,
-                        "No se pudo cancelar el partido.\nPosiblemente ya está cancelado.",
+                        "No se pudo cancelar el partido."
+                                + "Posiblemente ya esta cancelado.",
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -442,23 +453,23 @@ public class PartidosView extends javax.swing.JFrame {
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         // TODO add your handling code here:
-        
-                limpiarCampos();
+
+        limpiarCampos();
         jTable1.clearSelection();
 
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
-        
-                String texto = txtBuscar.getText().trim();
- 
+
+        String texto = txtBuscar.getText().trim();
+
         if (texto.isEmpty()) {
             // Si está vacío muestra todos
             cargarTabla(controller.listarPartidos());
             return;
         }
- 
+
         try {
             // busca por id si es numeraso
             int id = Integer.parseInt(texto);
@@ -468,7 +479,7 @@ public class PartidosView extends javax.swing.JFrame {
                 lista.add(p);
                 cargarTabla(lista);
             } else {
-                JOptionPane.showMessageDialog(this, "No se encontró partido con ID: " + id);
+                JOptionPane.showMessageDialog(this, "No se enconto partido con ID: " + id);
             }
         } catch (NumberFormatException e) {
             // Si no es número → busca por equipo (usa ILIKE del SP)
@@ -515,9 +526,7 @@ public class PartidosView extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
- 
-        
-        
+
         java.awt.EventQueue.invokeLater(() -> new PartidosView().setVisible(true));
     }
 

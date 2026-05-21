@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetalleVentaDao {
-
+/*
     // INSERTAR un detalle de venta
     public boolean insertar(DetalleVentaModel detalle) { //Recibe un detalle lleno y lo va a guardaar en la base de datos 
         String query = "INSERT INTO detalle_venta(venta_id, ticket_id, precio, iva) VALUES (?, ?, ?, ?)"; //Esto evita que alguien ingrese codigo pegriloso en la DB
@@ -57,5 +57,5 @@ public class DetalleVentaDao {
             e.printStackTrace();
         }
         return lista;
-    }
+    }*/
 }

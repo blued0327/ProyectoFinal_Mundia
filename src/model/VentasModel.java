@@ -1,20 +1,20 @@
-<<<<<<< HEAD
+
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 
-=======
-package model;
 
-import java.math.BigDecimal;
+//package model;
+
+//import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
 
->>>>>>> 56fd2b3ae4ec3f9b864ba4ae813f685a619cf7fd
-public class VentasModel {
 
+public class VentasModel {
+/*
     private int id;
     private LocalDateTime fecha;
     private int clienteId;
@@ -252,6 +252,6 @@ public class VentasModel {
     public void setTotal(double total) {
         this.total = total;
     }
-
+*/
         
 }

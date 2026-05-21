@@ -12,19 +12,19 @@ import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import model.UsuarioModel;
 import util.Sesion;
+import util.IconUtil;
 
 public class LoginView extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginView.class.getName());
     private final UsuarioController controller = new UsuarioController();
 
-    /**
-     * Creates new form LoginView
-     */
+   
     public LoginView() {
         initComponents();
         configurarVentana();
         configurarEventos();
+        IconUtil.setIcono(this);
     }
 
     /**

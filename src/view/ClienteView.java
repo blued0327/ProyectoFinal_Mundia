@@ -8,6 +8,8 @@ package view;
 import controller.ClientesController;
 import model.ClienteModel;
 import javax.swing.JOptionPane;
+import util.IconUtil;
+
 /**
  *
  * @author rchar
@@ -44,6 +46,7 @@ private void limpiarCampos() {
      */
     public ClienteView() {
         initComponents();
+        IconUtil.setIcono(this);
     }
 
     /**

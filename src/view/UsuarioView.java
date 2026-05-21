@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import controller.UsuarioController;
 import model.UsuarioModel;
+import util.IconUtil;
 
 /**
  *
@@ -26,6 +27,7 @@ public class UsuarioView extends javax.swing.JFrame {
     public UsuarioView() {
         initComponents();
         tbl_consulta.setModel(table);
+        IconUtil.setIcono(this);
     }
 
     /**

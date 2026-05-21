@@ -5,8 +5,10 @@
 package view;
 
 import javax.swing.JOptionPane;
+import util.IconUtil;
 import util.Sesion;
-import viewClientes.ClienteView;
+import view.ClienteView;
+import view.PartidosView;
 
 /**
  *
@@ -22,6 +24,7 @@ public class MenuPrincipalView extends javax.swing.JFrame {
     public MenuPrincipalView() {
         initComponents();
         configurarVentana();
+        IconUtil.setIcono(this);
     }
 
     /**
@@ -38,12 +41,12 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         btn_clientes = new javax.swing.JButton();
         btn_boletos = new javax.swing.JButton();
         btn_ventas = new javax.swing.JButton();
-        btn_usuarios = new javax.swing.JButton();
         btn_cerrarSesion = new javax.swing.JButton();
+        btn_partidos = new javax.swing.JButton();
+        btn_users = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lbl_titulo.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 18));
         lbl_titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_titulo.setText("SISTEMA MUNDIAL 2026");
 
@@ -51,55 +54,69 @@ public class MenuPrincipalView extends javax.swing.JFrame {
         lbl_usuario.setText("Usuario: - | Rol: -");
 
         btn_clientes.setText("Clientes");
-        btn_clientes.setPreferredSize(new java.awt.Dimension(200, 40));
         btn_clientes.addActionListener(this::btn_clientesActionPerformed);
 
         btn_boletos.setText("Boletos");
-        btn_boletos.setPreferredSize(new java.awt.Dimension(200, 40));
         btn_boletos.addActionListener(this::btn_boletosActionPerformed);
 
         btn_ventas.setText("Ventas");
-        btn_ventas.setPreferredSize(new java.awt.Dimension(200, 40));
         btn_ventas.addActionListener(this::btn_ventasActionPerformed);
 
-        btn_usuarios.setText("Usuarios");
-        btn_usuarios.setPreferredSize(new java.awt.Dimension(200, 40));
-        btn_usuarios.addActionListener(this::btn_usuariosActionPerformed);
-
         btn_cerrarSesion.setText("Cerrar Sesión");
-        btn_cerrarSesion.setPreferredSize(new java.awt.Dimension(140, 30));
         btn_cerrarSesion.addActionListener(this::btn_cerrarSesionActionPerformed);
+
+        btn_partidos.setText("Partidos");
+        btn_partidos.addActionListener(this::btn_partidosActionPerformed);
+
+        btn_users.setText("Usuarios");
+        btn_users.addActionListener(this::btn_usersActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-            .addComponent(lbl_titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(lbl_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btn_clientes, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btn_boletos, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btn_ventas, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btn_usuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btn_cerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(113, 113, 113)
+                        .addComponent(lbl_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(178, 178, 178)
+                        .addComponent(btn_cerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(155, 155, 155)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btn_users, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(btn_clientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btn_boletos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btn_ventas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btn_partidos, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(126, 126, 126)
+                        .addComponent(lbl_titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(194, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(33, 33, 33)
                 .addComponent(lbl_titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                .addGap(28, 28, 28)
                 .addComponent(lbl_usuario)
-                .addGap(30, 30, 30)
+                .addGap(18, 18, 18)
                 .addComponent(btn_clientes, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(btn_boletos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(btn_ventas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(btn_usuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(btn_cerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
+                .addGap(12, 12, 12)
+                .addComponent(btn_users, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_partidos, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(btn_cerrarSesion)
+                .addGap(50, 50, 50))
         );
 
         pack();
@@ -115,8 +132,8 @@ public class MenuPrincipalView extends javax.swing.JFrame {
                     + " | Rol: " + Sesion.getUsuario().getRol());
         }
 
-        // solo el admin ve la gestión de usuarios
-        btn_usuarios.setVisible(Sesion.esAdmin());
+        // solo el admin ve a los  usuarios, sino es vendedor no tiene porque ver
+        btn_users.setVisible(Sesion.esAdmin());
     }
 
     private void btn_clientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clientesActionPerformed
@@ -130,13 +147,8 @@ public class MenuPrincipalView extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_boletosActionPerformed
 
     private void btn_ventasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ventasActionPerformed
-       JOptionPane.showMessageDialog(null, "estamos trabajando XD");;
+        JOptionPane.showMessageDialog(null, "estamos trabajando XD");;
     }//GEN-LAST:event_btn_ventasActionPerformed
-
-    private void btn_usuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_usuariosActionPerformed
-        UsuarioView usuarios = new UsuarioView();
-        usuarios.setVisible(true);
-    }//GEN-LAST:event_btn_usuariosActionPerformed
 
     private void btn_cerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrarSesionActionPerformed
         int opcion = JOptionPane.showConfirmDialog(this,
@@ -149,6 +161,18 @@ public class MenuPrincipalView extends javax.swing.JFrame {
             this.dispose();
         }
     }//GEN-LAST:event_btn_cerrarSesionActionPerformed
+
+    private void btn_partidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_partidosActionPerformed
+        // TODO add your handling code here:
+        PartidosView partido = new PartidosView();
+        partido.setVisible(true);
+    }//GEN-LAST:event_btn_partidosActionPerformed
+
+    private void btn_usersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_usersActionPerformed
+        // TODO add your handling code here:
+        UsuarioView usuarios = new UsuarioView();
+        usuarios.setVisible(true);
+    }//GEN-LAST:event_btn_usersActionPerformed
 
     /**
      * @param args the command line arguments
@@ -179,7 +203,8 @@ public class MenuPrincipalView extends javax.swing.JFrame {
     private javax.swing.JButton btn_boletos;
     private javax.swing.JButton btn_cerrarSesion;
     private javax.swing.JButton btn_clientes;
-    private javax.swing.JButton btn_usuarios;
+    private javax.swing.JButton btn_partidos;
+    private javax.swing.JButton btn_users;
     private javax.swing.JButton btn_ventas;
     private javax.swing.JLabel lbl_titulo;
     private javax.swing.JLabel lbl_usuario;
