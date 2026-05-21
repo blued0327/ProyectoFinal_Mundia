@@ -39,8 +39,8 @@ public class BoletosDao {
                 """;
 
         try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            // partido_id viene de getPartidoAsociado() casteado a int en el model
-            ps.setInt(1, Integer.parseInt(boleto.getPartidoAsociado()));
+            
+            ps.setInt(1, Integer.parseInt(boleto.getPartidoAsociado())); 
             ps.setString(2, boleto.getAsiento() + "");   // numero_asiento es VARCHAR
             ps.setString(3, boleto.getSeccion());
             ps.setBigDecimal(4, new java.math.BigDecimal(boleto.getPrecio()).setScale(2, java.math.RoundingMode.HALF_UP));
