@@ -10,72 +10,76 @@ import model.UsuarioModel;
 
 public class UsuarioDao {
 
-    //insertar
-    public boolean insertar(UsuarioModel user) {
+    //insertar , lo cambie a int para que devuelva el id que se incerto
+    public int insertar(UsuarioModel user) {
 
-        //query
-        String query = "INSERT INTO  usuario(username,password,rol) values(?,?,?)";
+        //query -- se cambia por los procedures sp--tengan cuidado con esto!!!!!
+        String query = "select sp_usuario_insertar(?,?,?,?)";
         //try
         try (Connection conn = CreateConnection.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
-            ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPassword());
-            ps.setString(3, user.getRol());
-
-            ps.executeUpdate();
-
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-        //actualizar
-
-    }
-
-    public boolean actualizar(UsuarioModel user) {
-
-        //query
-        String query = "UPDATE usuario set username = ?, password = ?, rol = ?, estado = ? where id = ?";
-
-        //try
-        try (Connection conn = CreateConnection.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
-
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getRol());
             ps.setBoolean(4, user.isEstado());
-            ps.setInt(5, user.getId());
-          
-            ps.executeUpdate();
+
+            ResultSet rs = ps.executeQuery();
+            //parte donde se incerta el id-- se hizo en el procedure
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            //usaremos -1 para errores ya que tiene que retorna positivo
+            return -1;
         } catch (SQLException e) {
             e.printStackTrace();
+            return -1;
         }
-        return false;
+
+    }
+    //actualizar
+
+    public boolean actualizar(UsuarioModel user) {
+
+        //query
+        String query = "SELECT sp_usuario_actualizar(?, ?, ?, ?, ?)";
+
+        //try
+        try (Connection conn = CreateConnection.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, user.getId());
+            ps.setString(2, user.getUsername());
+            ps.setString(3, user.getPassword());
+            ps.setString(4, user.getRol());
+            ps.setBoolean(5, user.isEstado());
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getBoolean(1);
+            }
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     //consultar
     public List<UsuarioModel> listar() {
         List<UsuarioModel> lista = new ArrayList<>();
-
-        //query
-        String query = "SELECT * FROM usuario ORDER BY id";
-
+        String query = "SELECT * FROM sp_usuario_todos()";
         try (Connection conn = CreateConnection.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                UsuarioModel user = new UsuarioModel(
-                        rs.getInt("id"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("rol"),
-                        rs.getBoolean("estado"),
-                        rs.getTimestamp("creado_en").toLocalDateTime());
-                lista.add(user);
-            }
 
+            while (rs.next()) {
+                UsuarioModel u = new UsuarioModel();
+                u.setId(rs.getInt("id"));
+                u.setUsername(rs.getString("username"));
+                u.setPassword(rs.getString("password"));
+                u.setRol(rs.getString("rol"));
+                u.setEstado(rs.getBoolean("estado"));
+                lista.add(u);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return lista;
 
     }
@@ -83,19 +87,44 @@ public class UsuarioDao {
     //cambiar estado
     public boolean cambiarEstado(int id, boolean estado) {
         //query
-        String query = "UPDATE usuario set estado = ? where id = ?";
-
+        String query = "SELECT sp_usuario_eliminar(?)";
         //try
-        try (Connection conn = CreateConnection.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(query);) {
-            ps.setBoolean(1, estado);
-            ps.setInt(2, id);
-            ps.executeUpdate();
+        try (Connection conn = CreateConnection.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
 
-            return true;
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getBoolean(1);
+            }
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
 
+    }
+
+    //buscar por username
+    public UsuarioModel buscarPorUsername(String username) {
+        String query = "SELECT * FROM sp_usuario(?)";
+        try (Connection conn = CreateConnection.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, username);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                UsuarioModel user = new UsuarioModel();
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setRol(rs.getString("rol"));
+                user.setEstado(rs.getBoolean("estado"));
+                return user;
+            }
+            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

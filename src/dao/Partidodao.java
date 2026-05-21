@@ -1,29 +1,24 @@
 package dao;
 
+import connection.CreateConnection;
 import model.PartidoModel;
-import util.connection.       // ← ajusta si tu paquete de conexión tiene otro nombre
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * DAO para la tabla 'partido'.
- * Todos los métodos abren y cierran su propia conexión.
- * Si tu equipo usa una conexión compartida, ajusta según su Conexion.java.
- */
-public class PartidoDAO {
+public class PartidoDao {
 
-    // ─────────────────────────────────────────────
-    //  INSERTAR
-    // ─────────────────────────────────────────────
-    public boolean insertar(PartidoModel p) {
-        String sql = "INSERT INTO partido "
-                   + "(equipo_local, equipo_visitante, fecha, estadio, ciudad, capacidad, estado) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try (Connection con = Conexion.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+    public static final String ESTADO_DISPONIBLE = "DISPONIBLE";
+    public static final String ESTADO_FINALIZADO = "FINALIZADO";
+    public static final String ESTADO_CANCELADO  = "CANCELADO";
+
+    // INSERTAR  devuelve id generado, -1 si falla
+    // SP: sp_partido_insertar(local, visitante, fecha, estadio, ciudad, capacidad, estado)
+    public int insertar(PartidoModel p) {
+        String query = "SELECT sp_partido_insertar(?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = CreateConnection.getInstancia().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setString(1, p.getEquipoLocal());
             ps.setString(2, p.getEquipoVisitante());
@@ -33,161 +28,130 @@ public class PartidoDAO {
             ps.setInt(6, p.getCapacidad());
             ps.setString(7, p.getEstado());
 
-            return ps.executeUpdate() > 0;
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+            return -1;
 
         } catch (SQLException e) {
-            System.err.println("Error al insertar partido: " + e.getMessage());
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    // ACTUALIZAR — devuelve true si modificó
+    // SP: sp_partido_actualizar(id, local, visitante, fecha, estadio, ciudad, capacidad, estado)
+    public boolean actualizar(PartidoModel p) {
+        String query = "SELECT sp_partido_actualizar(?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = CreateConnection.getInstancia().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, p.getId());
+            ps.setString(2, p.getEquipoLocal());
+            ps.setString(3, p.getEquipoVisitante());
+            ps.setTimestamp(4, Timestamp.valueOf(p.getFecha()));
+            ps.setString(5, p.getEstadio());
+            ps.setString(6, p.getCiudad());
+            ps.setInt(7, p.getCapacidad());
+            ps.setString(8, p.getEstado());
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getBoolean(1);
+            return false;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }
 
-    // ─────────────────────────────────────────────
-    //  MODIFICAR
-    // ─────────────────────────────────────────────
-    public boolean modificar(PartidoModel p) {
-        String sql = "UPDATE partido SET "
-                   + "equipo_local = ?, equipo_visitante = ?, fecha = ?, "
-                   + "estadio = ?, ciudad = ?, capacidad = ?, estado = ? "
-                   + "WHERE id = ?";
-        try (Connection con = Conexion.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+    // ELIMINAR — cambia estado a CANCELADO vía SP, devuelve true si cambió
+    // SP: sp_partido_eliminar(id)
+    public boolean eliminar(int id) {
+        String query = "SELECT sp_partido_eliminar(?)";
+        try (Connection conn = CreateConnection.getInstancia().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
 
-            ps.setString(1, p.getEquipoLocal());
-            ps.setString(2, p.getEquipoVisitante());
-            ps.setTimestamp(3, Timestamp.valueOf(p.getFecha()));
-            ps.setString(4, p.getEstadio());
-            ps.setString(5, p.getCiudad());
-            ps.setInt(6, p.getCapacidad());
-            ps.setString(7, p.getEstado());
-            ps.setInt(8, p.getId());
-
-            return ps.executeUpdate() > 0;
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getBoolean(1);
+            return false;
 
         } catch (SQLException e) {
-            System.err.println("Error al modificar partido: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
 
-    // ─────────────────────────────────────────────
-    //  ELIMINAR
-    // ─────────────────────────────────────────────
-    public boolean eliminar(int idPartido) {
-        String sql = "DELETE FROM partido WHERE id = ?";
-        try (Connection con = Connection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, idPartido);
-            return ps.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            System.err.println("Error al eliminar partido: " + e.getMessage());
-            return false;
-        }
-    }
-
-    // ─────────────────────────────────────────────
-    //  LISTAR TODOS
-    // ─────────────────────────────────────────────
+    // LISTAR TODOS
+    // SP: sp_partido_todos()
     public List<PartidoModel> listarTodos() {
         List<PartidoModel> lista = new ArrayList<>();
-        String sql = "SELECT id, equipo_local, equipo_visitante, fecha, estadio, "
-                   + "ciudad, capacidad, estado, created_en FROM partido ORDER BY fecha";
-        try (Connection con = Conexion.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
+        String query = "SELECT * FROM sp_partido_todos()";
+        try (Connection conn = CreateConnection.getInstancia().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
-                lista.add(mapear(rs));
-            }
+            while (rs.next()) lista.add(mapear(rs));
+
         } catch (SQLException e) {
-            System.err.println("Error al listar partidos: " + e.getMessage());
+            e.printStackTrace();
         }
         return lista;
     }
 
-    // ─────────────────────────────────────────────
-    //  BUSCAR POR ID
-    // ─────────────────────────────────────────────
+    // BUSCAR POR ID
+    // SP: sp_partido_id(id)
     public PartidoModel buscarPorId(int id) {
-        String sql = "SELECT id, equipo_local, equipo_visitante, fecha, estadio, "
-                   + "ciudad, capacidad, estado, created_en FROM partido WHERE id = ?";
-        try (Connection con = Conexion.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        String query = "SELECT * FROM sp_partido_id(?)";
+        try (Connection conn = CreateConnection.getInstancia().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return mapear(rs);
-            }
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return mapear(rs);
+
         } catch (SQLException e) {
-            System.err.println("Error al buscar partido por id: " + e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }
 
-    // ─────────────────────────────────────────────
-    //  BUSCAR POR ESTADO  (útil para el módulo de Tickets)
-    // ─────────────────────────────────────────────
-    public List<PartidoModel> buscarPorEstado(String estado) {
-        List<PartidoModel> lista = new ArrayList<>();
-        String sql = "SELECT id, equipo_local, equipo_visitante, fecha, estadio, "
-                   + "ciudad, capacidad, estado, created_en FROM partido WHERE estado = ? ORDER BY fecha";
-        try (Connection con = Conexion.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setString(1, estado.toUpperCase());
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) lista.add(mapear(rs));
-            }
-        } catch (SQLException e) {
-            System.err.println("Error al buscar partidos por estado: " + e.getMessage());
-        }
-        return lista;
-    }
-
-    // ─────────────────────────────────────────────
-    //  BUSCAR POR EQUIPO  (búsqueda parcial, útil para el JTextField de búsqueda)
-    // ─────────────────────────────────────────────
+    // BUSCAR POR EQUIPO — búsqueda parcial ILIKE desde el SP
+    // SP: sp_partido_equipo(texto)
     public List<PartidoModel> buscarPorEquipo(String texto) {
         List<PartidoModel> lista = new ArrayList<>();
-        String sql = "SELECT id, equipo_local, equipo_visitante, fecha, estadio, "
-                   + "ciudad, capacidad, estado, created_en FROM partido "
-                   + "WHERE LOWER(equipo_local) LIKE ? OR LOWER(equipo_visitante) LIKE ? "
-                   + "ORDER BY fecha";
-        try (Connection con = Conexion.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        String query = "SELECT * FROM sp_partido_equipo(?)";
+        try (Connection conn = CreateConnection.getInstancia().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
 
-            String patron = "%" + texto.toLowerCase() + "%";
-            ps.setString(1, patron);
-            ps.setString(2, patron);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) lista.add(mapear(rs));
-            }
+            ps.setString(1, texto);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) lista.add(mapear(rs));
+
         } catch (SQLException e) {
-            System.err.println("Error al buscar partidos por equipo: " + e.getMessage());
+            e.printStackTrace();
         }
         return lista;
     }
 
-    // ─────────────────────────────────────────────
-    //  MAPEAR ResultSet → PartidoModel  (privado, evita repetir código)
-    // ─────────────────────────────────────────────
+    // MAPEAR ResultSet -> PartidoModel
+    // Nota: el SP retorna la columna como 'creado_en' (alias de created_en en la tabla)
     private PartidoModel mapear(ResultSet rs) throws SQLException {
         PartidoModel p = new PartidoModel();
         p.setId(rs.getInt("id"));
         p.setEquipoLocal(rs.getString("equipo_local"));
         p.setEquipoVisitante(rs.getString("equipo_visitante"));
 
-        Timestamp ts = rs.getTimestamp("fecha");
-        if (ts != null) p.setFecha(ts.toLocalDateTime());
+        Timestamp fecha = rs.getTimestamp("fecha");
+        if (fecha != null) p.setFecha(fecha.toLocalDateTime());
 
         p.setEstadio(rs.getString("estadio"));
         p.setCiudad(rs.getString("ciudad"));
         p.setCapacidad(rs.getInt("capacidad"));
         p.setEstado(rs.getString("estado"));
 
-        Timestamp creadoTs = rs.getTimestamp("created_en");
-        if (creadoTs != null) p.setCreadoEn(creadoTs.toLocalDateTime());
+        Timestamp creadoEn = rs.getTimestamp("creado_en");
+        if (creadoEn != null) p.setCreadoEn(creadoEn.toLocalDateTime());
 
         return p;
     }

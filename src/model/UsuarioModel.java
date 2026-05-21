@@ -16,6 +16,21 @@ public class UsuarioModel {
 
     }
 
+    //insertar
+    public UsuarioModel(String username, String password, String rol) {
+        this.username = username;
+        this.password = password;
+        this.rol = rol;
+    }
+
+    //actulizar
+    public UsuarioModel(String username, String password, String rol, boolean estado) {
+        this.username = username;
+        this.password = password;
+        this.rol = rol;
+        this.estado = estado;
+    }
+
     //todos
     public UsuarioModel(int id, String username, String password, String rol, boolean estado, LocalDateTime creadoCuando) {
         this.id = id;
