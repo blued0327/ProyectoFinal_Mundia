@@ -5,7 +5,7 @@
 package viewClientes;
 
 
-import controllerClientes.ClientesController;
+import controller.ClientesController;
 import model.ClienteModel;
 import javax.swing.JOptionPane;
 /**
