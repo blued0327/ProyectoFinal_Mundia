@@ -12,8 +12,8 @@ public class PartidoController {
 
     // INSERTAR
     public boolean insertarPartido(String equipoLocal, String equipoVisitante,
-                                   LocalDateTime fecha, String estadio,
-                                   String ciudad, int capacidad, String estado) {
+            LocalDateTime fecha, String estadio,
+            String ciudad, int capacidad, String estado) {
         PartidoModel p = new PartidoModel(
                 equipoLocal, equipoVisitante,
                 fecha, estadio, ciudad, capacidad, estado
@@ -23,8 +23,8 @@ public class PartidoController {
 
     // ACTUALIZAR
     public boolean actualizarPartido(int id, String equipoLocal, String equipoVisitante,
-                                     LocalDateTime fecha, String estadio,
-                                     String ciudad, int capacidad, String estado) {
+            LocalDateTime fecha, String estadio,
+            String ciudad, int capacidad, String estado) {
         PartidoModel p = new PartidoModel(
                 id, equipoLocal, equipoVisitante,
                 fecha, estadio, ciudad, capacidad, estado, null
@@ -32,7 +32,7 @@ public class PartidoController {
         return dao.actualizar(p);
     }
 
-    // ELIMINAR — pone CANCELADO vía SP
+    // ELIMINAR pone cancelado vía SP
     public boolean eliminarPartido(int id) {
         return dao.eliminar(id);
     }
@@ -55,8 +55,8 @@ public class PartidoController {
     // LISTAR SOLO DISPONIBLES — útil para el módulo de Tickets y Ventas
     public List<PartidoModel> listarDisponibles() {
         return dao.listarTodos()
-                  .stream()
-                  .filter(p -> PartidoDao.ESTADO_DISPONIBLE.equals(p.getEstado()))
-                  .toList();
+                .stream()
+                .filter(p -> PartidoDao.ESTADO_DISPONIBLE.equals(p.getEstado()))
+                .toList();
     }
-} 
+}

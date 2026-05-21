@@ -39,7 +39,7 @@ public class PartidoDao {
     }
 
     // ACTUALIZAR — devuelve true si modificó
-    // SP: sp_partido_actualizar(id, local, visitante, fecha, estadio, ciudad, capacidad, estado)
+    
     public boolean actualizar(PartidoModel p) {
         String query = "SELECT sp_partido_actualizar(?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = CreateConnection.getInstancia().getConnection();
@@ -64,8 +64,8 @@ public class PartidoDao {
         }
     }
 
-    // ELIMINAR — cambia estado a CANCELADO vía SP, devuelve true si cambió
-    // SP: sp_partido_eliminar(id)
+    // ELIMINAR cambia estado a cancelado vía sp y devuelve true si cambió
+  
     public boolean eliminar(int id) {
         String query = "SELECT sp_partido_eliminar(?)";
         try (Connection conn = CreateConnection.getInstancia().getConnection();
@@ -83,7 +83,7 @@ public class PartidoDao {
     }
 
     // LISTAR TODOS
-    // SP: sp_partido_todos()
+    
     public List<PartidoModel> listarTodos() {
         List<PartidoModel> lista = new ArrayList<>();
         String query = "SELECT * FROM sp_partido_todos()";
@@ -116,8 +116,8 @@ public class PartidoDao {
         return null;
     }
 
-    // BUSCAR POR EQUIPO — búsqueda parcial ILIKE desde el SP
-    // SP: sp_partido_equipo(texto)
+    // buscar por partido busqueda parcial ILIKE desde el SP
+    
     public List<PartidoModel> buscarPorEquipo(String texto) {
         List<PartidoModel> lista = new ArrayList<>();
         String query = "SELECT * FROM sp_partido_equipo(?)";
@@ -135,7 +135,7 @@ public class PartidoDao {
     }
 
     // MAPEAR ResultSet -> PartidoModel
-    // Nota: el SP retorna la columna como 'creado_en' (alias de created_en en la tabla)
+    
     private PartidoModel mapear(ResultSet rs) throws SQLException {
         PartidoModel p = new PartidoModel();
         p.setId(rs.getInt("id"));

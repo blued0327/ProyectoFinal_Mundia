@@ -14,63 +14,109 @@ public class PartidoModel {
     private String estado;
     private LocalDateTime creadoEn;
 
-    public PartidoModel() {}
+    public PartidoModel() {
+    }
 
-    // Sin id — para insertar
+    // Sin id para insertar
     public PartidoModel(String equipoLocal, String equipoVisitante,
-                        LocalDateTime fecha, String estadio,
-                        String ciudad, int capacidad, String estado) {
-        this.equipoLocal     = equipoLocal;
+            LocalDateTime fecha, String estadio,
+            String ciudad, int capacidad, String estado) {
+        this.equipoLocal = equipoLocal;
         this.equipoVisitante = equipoVisitante;
-        this.fecha           = fecha;
-        this.estadio         = estadio;
-        this.ciudad          = ciudad;
-        this.capacidad       = capacidad;
-        this.estado          = estado;
+        this.fecha = fecha;
+        this.estadio = estadio;
+        this.ciudad = ciudad;
+        this.capacidad = capacidad;
+        this.estado = estado;
     }
 
-    // Completo — para traer desde BD
+    // para traer desde BD
     public PartidoModel(int id, String equipoLocal, String equipoVisitante,
-                        LocalDateTime fecha, String estadio,
-                        String ciudad, int capacidad, String estado,
-                        LocalDateTime creadoEn) {
-        this.id              = id;
-        this.equipoLocal     = equipoLocal;
+            LocalDateTime fecha, String estadio,
+            String ciudad, int capacidad, String estado,
+            LocalDateTime creadoEn) {
+        this.id = id;
+        this.equipoLocal = equipoLocal;
         this.equipoVisitante = equipoVisitante;
-        this.fecha           = fecha;
-        this.estadio         = estadio;
-        this.ciudad          = ciudad;
-        this.capacidad       = capacidad;
-        this.estado          = estado;
-        this.creadoEn        = creadoEn;
+        this.fecha = fecha;
+        this.estadio = estadio;
+        this.ciudad = ciudad;
+        this.capacidad = capacidad;
+        this.estado = estado;
+        this.creadoEn = creadoEn;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public String getEquipoLocal() { return equipoLocal; }
-    public void setEquipoLocal(String equipoLocal) { this.equipoLocal = equipoLocal; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getEquipoVisitante() { return equipoVisitante; }
-    public void setEquipoVisitante(String equipoVisitante) { this.equipoVisitante = equipoVisitante; }
+    public String getEquipoLocal() {
+        return equipoLocal;
+    }
 
-    public LocalDateTime getFecha() { return fecha; }
-    public void setFecha(LocalDateTime fecha) { this.fecha = fecha; }
+    public void setEquipoLocal(String equipoLocal) {
+        this.equipoLocal = equipoLocal;
+    }
 
-    public String getEstadio() { return estadio; }
-    public void setEstadio(String estadio) { this.estadio = estadio; }
+    public String getEquipoVisitante() {
+        return equipoVisitante;
+    }
 
-    public String getCiudad() { return ciudad; }
-    public void setCiudad(String ciudad) { this.ciudad = ciudad; }
+    public void setEquipoVisitante(String equipoVisitante) {
+        this.equipoVisitante = equipoVisitante;
+    }
 
-    public int getCapacidad() { return capacidad; }
-    public void setCapacidad(int capacidad) { this.capacidad = capacidad; }
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
 
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
+    }
 
-    public LocalDateTime getCreadoEn() { return creadoEn; }
-    public void setCreadoEn(LocalDateTime creadoEn) { this.creadoEn = creadoEn; }
+    public String getEstadio() {
+        return estadio;
+    }
+
+    public void setEstadio(String estadio) {
+        this.estadio = estadio;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public int getCapacidad() {
+        return capacidad;
+    }
+
+    public void setCapacidad(int capacidad) {
+        this.capacidad = capacidad;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public LocalDateTime getCreadoEn() {
+        return creadoEn;
+    }
+
+    public void setCreadoEn(LocalDateTime creadoEn) {
+        this.creadoEn = creadoEn;
+    }
 
     @Override
     public String toString() {
