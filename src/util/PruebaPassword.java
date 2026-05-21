@@ -27,5 +27,10 @@ public class PruebaPassword {
         System.out.println("Hash 1: " + hash1);
         System.out.println("Hash 2: " + hash2);
         System.out.println("¿Son iguales? " + hash1.equals(hash2));
+         
+        String hash3 = PasswordUtil.hashear("admin123");
+        System.out.println("Hash para 'admin123':");
+        System.out.println(hash3);
+        
     }
 }

@@ -16,13 +16,13 @@ public class UsuarioDao {
         //query -- se cambia por los procedures sp--tengan cuidado con esto!!!!!
         String query = "select sp_usuario_insertar(?,?,?,?)";
         //try
-        try (Connection conn = CreateConnection.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = CreateConnection.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getRol());
             ps.setBoolean(4, user.isEstado());
 
-            ps.executeUpdate();
+            ResultSet rs = ps.executeQuery();
             //parte donde se incerta el id-- se hizo en el procedure
             if (rs.next()) {
                 return rs.getInt(1);
@@ -87,15 +87,16 @@ public class UsuarioDao {
     //cambiar estado
     public boolean cambiarEstado(int id, boolean estado) {
         //query
-        String query = "UPDATE usuario set estado = ? where id = ?";
-
+        String query = "SELECT sp_usuario_eliminar(?)";
         //try
-        try (Connection conn = CreateConnection.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(query);) {
-            ps.setBoolean(1, estado);
-            ps.setInt(2, id);
-            ps.executeUpdate();
+        try (Connection conn = CreateConnection.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
 
-            return true;
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getBoolean(1);
+            }
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -105,7 +106,7 @@ public class UsuarioDao {
 
     //buscar por username
     public UsuarioModel buscarPorUsername(String username) {
-        String query = "SELECT * FROM sp_usuario_por_username(?)";
+        String query = "SELECT * FROM sp_usuario(?)";
         try (Connection conn = CreateConnection.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setString(1, username);

@@ -16,17 +16,18 @@ public class TicketModel {
     private String equipoVisitante;
 
     //vacio
-    public TicketModel() {}
+    public TicketModel() {
+    }
 
     //todos
     public TicketModel(int id, int partidoId, String numeroAsiento, String seccion,
-                       BigDecimal precio, String estado) {
-        this.id            = id;
-        this.partidoId     = partidoId;
+            BigDecimal precio, String estado) {
+        this.id = id;
+        this.partidoId = partidoId;
         this.numeroAsiento = numeroAsiento;
-        this.seccion       = seccion;
-        this.precio        = precio;
-        this.estado        = estado;
+        this.seccion = seccion;
+        this.precio = precio;
+        this.estado = estado;
     }
 
     public int getId() {
@@ -92,8 +93,6 @@ public class TicketModel {
     public void setEquipoVisitante(String equipoVisitante) {
         this.equipoVisitante = equipoVisitante;
     }
-
-
 
     //para que se vea bien en jcombobox o jlist
     @Override
