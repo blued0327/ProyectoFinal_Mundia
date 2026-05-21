@@ -59,7 +59,8 @@ public class ClienteDao {
             return false;
         }
     }
-     
+     //esto no se hace
+     /*
      public boolean EliminarCliente(int id) {
         String sql = "DELETE FROM cliente WHERE id = ?";
  
@@ -75,6 +76,7 @@ public class ClienteDao {
             return false;
         }
     }
+*/
      
      public ClienteModel BuscarConID(int id){
        String sql = "SELECT * FROM cliente WHERE id=?";
