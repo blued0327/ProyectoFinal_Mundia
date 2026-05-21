@@ -10,28 +10,34 @@ import model.UsuarioModel;
 
 public class UsuarioDao {
 
-    //insertar
-    public boolean insertar(UsuarioModel user) {
+    //insertar , lo cambie a int para que devuelva el id que se incerto
+    public int insertar(UsuarioModel user) {
 
-        //query
-        String query = "INSERT INTO  usuario(username,password,rol) values(?,?,?)";
+        //query -- se cambia por los procedures sp--tengan cuidado con esto!!!!!
+        String query = "select sp_usuario_insertar(?,?,?,?)";
         //try
-        try (Connection conn = CreateConnection.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+        try (Connection conn = CreateConnection.getInstancia().getConnection(); PreparedStatement ps = conn.prepareStatement(query);
+                ResultSet rs  = ps.executeQuery() ) {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getRol());
+            ps.setBoolean(4, user.isEstado());
 
             ps.executeUpdate();
-
-            return true;
+            //parte donde se incerta el id-- se hizo en el procedure
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+            //usaremos -1 para errores ya que tiene que retorna positivo
+            return -1;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return -1;
         }
-        //actualizar
+      
 
     }
-
+      //actualizar
     public boolean actualizar(UsuarioModel user) {
 
         //query
@@ -45,7 +51,7 @@ public class UsuarioDao {
             ps.setString(3, user.getRol());
             ps.setBoolean(4, user.isEstado());
             ps.setInt(5, user.getId());
-          
+
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
