@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 
 public class IconUtil {
 
-    private static final String ruta_imagen = "/resources/logo.png";
+    private static final String ruta_imagen = "/resources//logo.png";
     
 
     public static void setIcono(JFrame frame) {
