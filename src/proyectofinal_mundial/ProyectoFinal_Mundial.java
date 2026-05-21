@@ -5,8 +5,9 @@
 package proyectofinal_mundial;
 import connection.CreateConnection;
 import java.sql.*;
-import dao.ClienteDao;
-import model.ClienteModel;
+import dao.BoletosDao;
+import java.util.List;
+import model.BoletosModel;
 
 /**
  *
@@ -19,68 +20,100 @@ public class ProyectoFinal_Mundial {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Connection conn = CreateConnection.getInstancia().getConnection();   
-        
-        ClienteDao dao = new ClienteDao();
+         BoletosDao dao = new BoletosDao();
 
-        // ===== PROBAR INSERT =====
-        ClienteModel cliente = new ClienteModel(
-                0,
-                "Ronald",
-                "Charuc",
-                "12345678",
-                "ronald@gmail.com",
-                "Guatemala"
-        );
+        try {
 
-        boolean registrado = dao.RegistrarCLiente(cliente);
+            // ================================
+            // 1. GENERAR TICKET
+            // ================================
+            BoletosModel boleto = new BoletosModel(
+                    0,              // id
+                    "1",            // partido asociado
+                    15,             // asiento
+                    "VIP",          // sección
+                    500.00,         // precio
+                    "DISPONIBLE"    // estado
+            );
 
-        if (registrado) {
-            System.out.println("Cliente registrado correctamente");
-        } else {
-            System.out.println("Error al registrar cliente");
-        }
+            boolean creado = dao.generarTicket(boleto);
 
+            if (creado) {
+                System.out.println("✅ Ticket generado correctamente");
+                System.out.println("ID generado: " + boleto.getId());
+            } else {
+                System.out.println("❌ No se pudo generar el ticket");
+            }
 
-        // ===== PROBAR BUSCAR =====
-        ClienteModel encontrado = dao.BuscarConID(1);
+            // ================================
+            // 2. CONSULTAR DISPONIBLES
+            // ================================
+            System.out.println("\n📌 Tickets disponibles:");
 
-        if (encontrado != null) {
-            System.out.println("Cliente encontrado:");
-            System.out.println("Nombre: " + encontrado.getNombre());
-            System.out.println("Apellido: " + encontrado.getApellido());
-            System.out.println("Telefono: " + encontrado.getTelefono());
-        } else {
-            System.out.println("Cliente no encontrado");
-        }
+            List<BoletosModel> disponibles =
+                    dao.consultarDisponibles(1);
 
+            for (BoletosModel b : disponibles) {
 
-        // ===== PROBAR MODIFICAR =====
-        ClienteModel modificar = new ClienteModel(
-                1,
-                "Ronald Modificado",
-                "Charuc",
-                "87654321",
-                "nuevo@gmail.com",
-                "Zona 1"
-        );
+                System.out.println(
+                        "ID: " + b.getId()
+                        + " | Asiento: " + b.getAsiento()
+                        + " | Sección: " + b.getSeccion()
+                        + " | Precio: " + b.getPrecio()
+                        + " | Estado: " + b.getEstado()
+                );
+            }
 
-        boolean modificado = dao.ModificarCliente(modificar);
+            // ================================
+            // 3. RESERVAR ASIENTO
+            // ================================
+            System.out.println("\n🎟 Reservando asiento 15...");
 
-        if (modificado) {
-            System.out.println("Cliente modificado correctamente");
-        } else {
-            System.out.println("Error al modificar");
-        }
+            BoletosModel reservado =
+                    dao.asignarAsiento(1, "15");
 
+            if (reservado != null) {
 
-        // ===== PROBAR ELIMINAR =====
-        boolean eliminado = dao.EliminarCliente(1);
+                System.out.println("✅ Asiento reservado");
+                System.out.println("Estado actual: "
+                        + reservado.getEstado());
 
-        if (eliminado) {
-            System.out.println("Cliente eliminado correctamente");
-        } else {
-            System.out.println("Error al eliminar");
+                // ================================
+                // 4. CONFIRMAR VENTA
+                // ================================
+                boolean vendido =
+                        dao.confirmarVenta(reservado.getId());
+
+                if (vendido) {
+                    System.out.println("💰 Venta confirmada");
+                } else {
+                    System.out.println("❌ No se pudo confirmar");
+                }
+
+            } else {
+                System.out.println("❌ El asiento no está disponible");
+            }
+
+            // ================================
+            // 5. LIBERAR ASIENTO
+            // ================================
+            boolean liberado = dao.liberarAsiento(1);
+
+            if (liberado) {
+                System.out.println("🔓 Asiento liberado");
+            } else {
+                System.out.println("❌ No se pudo liberar");
+            }
+
+        } catch (SQLException e) {
+
+            System.out.println("🚨 Error SQL:");
+            e.printStackTrace();
+
+        } catch (Exception e) {
+
+            System.out.println("🚨 Error general:");
+            e.printStackTrace();
         }
     }
 }
