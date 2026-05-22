@@ -77,7 +77,7 @@ public class PartidosView extends javax.swing.JFrame {
         if (parseFecha() == null) {
             JOptionPane.showMessageDialog(this,
                     "Formato de fecha incorrecto.\nEjemplo correcto: 2026-06-11 19:00",
-                    "Fecha inválida", JOptionPane.WARNING_MESSAGE);
+                    "Fecha invalida", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         try {
@@ -87,8 +87,8 @@ public class PartidosView extends javax.swing.JFrame {
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this,
-                    "La capacidad debe ser un número entero mayor a 0.",
-                    "Capacidad inválida", JOptionPane.WARNING_MESSAGE);
+                    "La capacidad debe ser un numero entero mayor a 0.",
+                    "Capacidad invalida", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         return true;
@@ -422,8 +422,8 @@ public class PartidosView extends javax.swing.JFrame {
 
         int id = (int) jTable1.getValueAt(fila, 0);
         int confirm = JOptionPane.showConfirmDialog(this,
-                "¿Deseas cancelar este partido?\nSe cambiará su estado a CANCELADO.",
-                "Confirmar cancelación", JOptionPane.YES_NO_OPTION);
+                "¿Deseas cancelar este partido?\nSe cambiara su estado a CANCELADO.",
+                "Confirmar cancelacion", JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
             boolean ok = controller.eliminarPartido(id);
@@ -468,7 +468,7 @@ public class PartidosView extends javax.swing.JFrame {
                 lista.add(p);
                 cargarTabla(lista);
             } else {
-                JOptionPane.showMessageDialog(this, "No se encontró partido con ID: " + id);
+                JOptionPane.showMessageDialog(this, "No se encontro partido con ID: " + id);
             }
         } catch (NumberFormatException e) {
             // Si no es número → busca por equipo (usa ILIKE del SP)

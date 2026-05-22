@@ -10,7 +10,7 @@ public class PartidoController {
 
     private final PartidoDao dao = new PartidoDao();
 
-    // INSERTAR
+    // insertar
     public boolean insertarPartido(String equipoLocal, String equipoVisitante,
             LocalDateTime fecha, String estadio,
             String ciudad, int capacidad, String estado) {
@@ -21,7 +21,7 @@ public class PartidoController {
         return dao.insertar(p) > 0;
     }
 
-    // ACTUALIZAR
+    // el de actualizar
     public boolean actualizarPartido(int id, String equipoLocal, String equipoVisitante,
             LocalDateTime fecha, String estadio,
             String ciudad, int capacidad, String estado) {
@@ -32,27 +32,27 @@ public class PartidoController {
         return dao.actualizar(p);
     }
 
-    // ELIMINAR pone cancelado vía SP
+    // eliminarR pone cancelado vía SP
     public boolean eliminarPartido(int id) {
         return dao.eliminar(id);
     }
 
-    // LISTAR TODOS
+    // listar a todos
     public List<PartidoModel> listarPartidos() {
         return dao.listarTodos();
     }
 
-    // BUSCAR POR ID
+    // buscar por id
     public PartidoModel buscarPorId(int id) {
         return dao.buscarPorId(id);
     }
 
-    // BUSCAR POR EQUIPO
+    // buscar por equipo
     public List<PartidoModel> buscarPorEquipo(String texto) {
         return dao.buscarPorEquipo(texto);
     }
 
-    // LISTAR SOLO DISPONIBLES — útil para el módulo de Tickets y Ventas
+    // listar los disponibles (sirve mas que nada para el modulo de ventas y tickets)
     public List<PartidoModel> listarDisponibles() {
         return dao.listarTodos()
                 .stream()
